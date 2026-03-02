@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/React_useSate/static/css/main.1e80e8cc.css",
+    "main.js": "/React_useSate/static/js/main.2ca6bde4.js",
+    "static/media/logo.svg": "/React_useSate/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
+    "index.html": "/React_useSate/index.html",
+    "main.1e80e8cc.css.map": "/React_useSate/static/css/main.1e80e8cc.css.map",
+    "main.2ca6bde4.js.map": "/React_useSate/static/js/main.2ca6bde4.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.1e80e8cc.css",
+    "static/js/main.2ca6bde4.js"
+  ]
+}
