@@ -3,7 +3,7 @@ import ProgressBar from './ProgressBar';
 
 
 
-function Question({question, onClickVariant, getColor, step, totalQuestions})
+function Question({question, variants, onClickVariant, getColor, step, totalQuestions})
 {
     const percentage = Math.round(step/totalQuestions*100);
 
@@ -13,7 +13,7 @@ function Question({question, onClickVariant, getColor, step, totalQuestions})
         <h3>{question.title}</h3>
         <ul>
             {
-                question.variants.map
+                variants.map
                 (
                       (text, index) =>
                         <li key={index} onClick={() => onClickVariant(index)} style={{backgroundColor: getColor(index)}}>

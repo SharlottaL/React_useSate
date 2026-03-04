@@ -1,19 +1,20 @@
 import logo from './logo.svg';
 import './App.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Question from './components/Question';
 import Final from './components/Final';
+import { Peremeshka } from './components/Peremeshka';
 
-const questions = [
+const beforeQuestions = [
   {
     title: "Какой язык программирования самый быстрый?",
     variants: ["C", "C++", "Assembler", "C#", "Python"],
-    correct: 2
+    correct: "Assembler"
   },
    {
     title: "Какой язык является чисто процедурным?",
     variants: ["C", "C++", "C#", "Java"],
-    correct: 0
+    correct: "C"
   },
    {
     title: "Что такое функция?",
@@ -21,7 +22,7 @@ const questions = [
       "Именованная область памяти, содержимое которой НЕ может изменяться во время выполнения программы",
       "Именованная область кода, которую можно вызвать при необходимости"
     ],
-    correct: 2
+    correct: "Именованная область кода, которую можно вызвать при необходимости"
   },
   {
    title: "Что такое переменная?",
@@ -29,46 +30,60 @@ const questions = [
       "Именованная область памяти, содержимое которой НЕ может изменяться во время выполнения программы",
       "Именованная область кода, которую можно вызвать при необходимости"
     ],
-    correct: 0
+    correct: "Именованная область памяти, содержимое которой может изменяться во время выполнения программы"
   },
   {
     title: "Что такое метод?",
     variants: ["Переменная внутри класса", "Функция внутри класса", "Реализация алгоритма"],
-    correct: 1
+    correct: "Функция внутри класса"
   },
    {
     title: "Какая структура данных обеспечивает добавление/удаление элементов за константное время?",
     variants: ["Массив", "Список", "Дерево"],
-    correct: 1
+    correct: "Список"
   },
   {
     title: "Какая структура данных обеспечивает доступ к элементам за константное время?",
     variants: ["Массив", "Список", "Дерево"],
-    correct: 0
+    correct: "Массив"
   }
 ]
 
 function App() {
-  const totalQuestions = questions.length;
+  const [questions] = useState(() => Peremeshka(beforeQuestions));
   const [step, setStep] = useState(0);
   const [correct, setCorrect] = useState(0);
   const [showResult, setShowResult] = useState(false);
   const [selectId, setSelectId] = useState(null);
+  const totalQuestions = questions.length;
   let question = questions[step];
-  const getColor = (variant) =>
+
+  const [variants, setVariants] = useState(() => 
+    question ? Peremeshka([...question.variants]) : []
+  );
+  
+  useEffect(() => {
+    if (question) {
+      setVariants(Peremeshka([...question.variants]));
+      setSelectId(null);
+    }
+  }, [step, question]);
+
+  const getColor = (index) =>
   {
     if(!showResult) return "transparent";
-    if(variant == selectId)
+    if(index == selectId)
     {
-     return variant === question.correct ? "#2ECC71" : "#FF0000";
+     return variants[index] === question.correct ? "#2ECC71" : "#FF0000";
   }
     return "transparent";
 }
-  const onClickVariant = (variant) => 
+
+  const onClickVariant = (index) => 
     {
-      setSelectId(variant);
+      setSelectId(index);
       setShowResult(true);
-      const correctVariant = variant === question.correct;
+      const correctVariant = variants[index] === question.correct;
      setTimeout(() => {
        if(correctVariant)
        { 
@@ -90,7 +105,7 @@ function App() {
     <div className="main">
      {
       step < totalQuestions ?
-      <Question question={question}  onClickVariant={onClickVariant}  getColor={getColor} step={step} totalQuestions={totalQuestions}/>
+      <Question question={question} variants={variants} onClickVariant={onClickVariant}  getColor={getColor} step={step} totalQuestions={totalQuestions}/>
    : <Final totalQuestions={totalQuestions} correctAnswers={correct} restart={restart}/>
      }
      {/* <h4 style={{display:"flex", justifyContent:"space-between"}}><div>№Вопроса:</div> <div>{step}</div></h4>
